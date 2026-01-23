@@ -20,8 +20,21 @@ public class Invoice {
     private String description;
     private Long total;
 
+    @ManyToOne
+    private Client client;
+
     public Invoice(String description, Long total) {
         this.description = description;
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "{id=" + id +
+                ", description='" + description + '\'' +
+                ", total=" + total +
+                ", client=" + client +
+                '}';
     }
 }
