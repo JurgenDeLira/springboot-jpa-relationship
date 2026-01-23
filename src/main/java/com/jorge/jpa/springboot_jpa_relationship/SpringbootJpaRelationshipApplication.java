@@ -9,6 +9,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.Optional;
+
 @SpringBootApplication
 public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 
@@ -24,7 +26,7 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		manyToOne();
+		manyToOneFindByIdClient();
 	}
 
 	public void manyToOne() {
@@ -35,5 +37,19 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		invoice.setClient(client);
 		Invoice invoiceDB =  invoiceRepository.save(invoice);
 		System.out.println(invoiceDB);
+	}
+
+	public void manyToOneFindByIdClient() {
+		Optional<Client> optionalClient = clientRepository.findById(1L);
+
+		if (optionalClient.isPresent()){
+			Client client = optionalClient.orElseThrow();
+
+			Invoice invoice = new Invoice("Compras de oficina", 2000L);
+			invoice.setClient(client);
+			Invoice invoiceDB =  invoiceRepository.save(invoice);
+			System.out.println(invoiceDB);
+		}
+
 	}
 }
