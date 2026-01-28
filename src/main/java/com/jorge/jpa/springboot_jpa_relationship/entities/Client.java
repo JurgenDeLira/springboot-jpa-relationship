@@ -2,10 +2,12 @@ package com.jorge.jpa.springboot_jpa_relationship.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
+
 @Getter
 @Setter
 
@@ -20,7 +22,15 @@ public class Client {
     private String name;
     private String lastname;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses;
+
+    public Client() {
+        addresses = new ArrayList<>();
+    }
+
     public Client(String name, String lastname) {
+        this();
         this.name = name;
         this.lastname = lastname;
     }
@@ -31,6 +41,7 @@ public class Client {
                 "{id=" + id +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
+                        ", adresses='" + addresses + '\'' +
                 '}';
     }
 }
