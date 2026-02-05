@@ -8,13 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter
-@Setter
-
 @Entity
 @Table(name = "clients")
 public class Client {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,11 +22,10 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "tbl_clientes_to_direcciones",
-            joinColumns = @JoinColumn(name = "id_cliente"),
-            inverseJoinColumns = @JoinColumn (name="id_direcciones"),
+            joinColumns = @JoinColumn(name= "id_cliente"),
+            inverseJoinColumns = @JoinColumn(name="id_direcciones"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"id_direcciones"}))
     private List<Address> addresses;
-
 
     public Client() {
         addresses = new ArrayList<>();
@@ -42,13 +37,44 @@ public class Client {
         this.lastname = lastname;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
     @Override
     public String toString() {
-        return
-                "{id=" + id +
-                ", name='" + name + '\'' +
-                ", lastname='" + lastname + '\'' +
-                        ", adresses='" + addresses + '\'' +
-                '}';
+        return "{id=" + id +
+                ", name=" + name +
+                ", lastname=" + lastname +
+                ", addresses=" + addresses + "}";
     }
+
 }

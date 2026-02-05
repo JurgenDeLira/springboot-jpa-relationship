@@ -8,12 +8,8 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Objects;
 
-@NoArgsConstructor
-@Getter
-@Setter
-
 @Entity
-@Table(name = "addresses")
+@Table(name="addresses")
 public class Address {
 
     @Id
@@ -23,26 +19,42 @@ public class Address {
     private String street;
     private Integer number;
 
-
+    public Address() {
+    }
 
     public Address(String street, Integer number) {
         this.street = street;
         this.number = number;
     }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getStreet() {
+        return street;
+    }
+    public void setStreet(String street) {
+        this.street = street;
+    }
+    public Integer getNumber() {
+        return number;
+    }
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 
     @Override
     public String toString() {
-        return  "{id=" + id +
-                ", street='" + street + '\'' +
-                ", number=" + number +
-                '}';
+        return "{id=" + id + ", street=" + street + ", number=" + number + "}";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null ) ? 0 : id.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
@@ -62,4 +74,6 @@ public class Address {
             return false;
         return true;
     }
+
+
 }
