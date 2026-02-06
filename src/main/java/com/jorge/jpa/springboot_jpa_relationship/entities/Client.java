@@ -46,6 +46,11 @@ public class Client {
         this.lastname = lastname;
     }
 
+    public Client addInvoice(Invoice invoice){
+        invoices.add(invoice);
+        invoice.setClient(this);
+        return this;
+    }
 
     @Override
     public String toString() {
