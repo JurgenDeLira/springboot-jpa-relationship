@@ -2,7 +2,9 @@ package com.jorge.jpa.springboot_jpa_relationship;
 
 import com.jorge.jpa.springboot_jpa_relationship.entities.Address;
 import com.jorge.jpa.springboot_jpa_relationship.entities.Client;
+import com.jorge.jpa.springboot_jpa_relationship.entities.ClientDetails;
 import com.jorge.jpa.springboot_jpa_relationship.entities.Invoice;
+import com.jorge.jpa.springboot_jpa_relationship.repositories.ClientDetailsRepository;
 import com.jorge.jpa.springboot_jpa_relationship.repositories.ClientRepository;
 import com.jorge.jpa.springboot_jpa_relationship.repositories.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,45 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	@Autowired
 	private InvoiceRepository invoiceRepository;
 
+	@Autowired
+	private ClientDetailsRepository clientDetailsRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationshipApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		removeInvoiceBidireccional();
+		oneToOneFindById();
+	}
+
+	@Transactional
+	public void oneToOneFindById() {
+		ClientDetails clientDetails = new ClientDetails(true, 5000);
+		clientDetailsRepository.save(clientDetails);
+
+		Optional<Client> clientOptional = clientRepository.findOne(2L);
+
+		clientOptional.ifPresent(client -> {
+			client.setClientDetails(clientDetails);
+			clientRepository.save(client);
+
+			System.out.println(client);
+		});
+
+	}
+
+
+	@Transactional
+	public void oneToOne() {
+		ClientDetails clientDetails = new ClientDetails(true, 5000);
+		clientDetailsRepository.save(clientDetails);
+
+		Client client = new Client("Erba", "Pura");
+		client.setClientDetails(clientDetails);
+		clientRepository.save(client);
+
+		System.out.println(client);
 	}
 
 	@Transactional
