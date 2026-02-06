@@ -11,10 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @SpringBootApplication
 public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
@@ -31,7 +28,26 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		oneToManyInvoiceBidireccional();
+		oneToManyInvoiceBidireccionalFindById();
+	}
+
+	@Transactional
+	public void oneToManyInvoiceBidireccionalFindById(){
+		Optional<Client> optionalClient = clientRepository.findOne(1L);
+
+		optionalClient.ifPresent(client -> {
+
+			Invoice invoice1 = new Invoice("Compras de la casa", 5000L);
+			Invoice invoice2 = new Invoice("Compras de oficina", 8000L);
+
+			client.addInvoice(invoice1).addInvoice(invoice2);
+
+			clientRepository.save(client);
+
+			System.out.println(client);
+		});
+
+
 	}
 
 	@Transactional
@@ -55,13 +71,17 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 			Address address1 = new Address("El verjel", 1234);
 			Address address2 = new Address("Vasco de Gama", 9875);
 
-			client.setAddresses(Arrays.asList(address1, address2));
+			Set<Address> addresses = new HashSet<>();
+			addresses.add(address1);
+			addresses.add(address2);
+
+			client.setAddresses(addresses);
 
 			clientRepository.save(client);
 
 			System.out.println(client);
 
-			Optional<Client> optionalClient2 = clientRepository.findOne(2L);
+			Optional<Client> optionalClient2 = clientRepository.findOneWithAddresses(2L);
 			optionalClient2.ifPresent(c -> {
 				c.getAddresses().remove(address2);
 				clientRepository.save(c);
@@ -100,7 +120,11 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 			Address address1 = new Address("El verjel", 1234);
 			Address address2 = new Address("Vasco de Gama", 9875);
 
-			client.setAddresses(Arrays.asList(address1, address2));
+			Set<Address> addresses = new HashSet<>();
+			addresses.add(address1);
+			addresses.add(address2);
+
+			client.setAddresses(addresses);
 
 			clientRepository.save(client);
 

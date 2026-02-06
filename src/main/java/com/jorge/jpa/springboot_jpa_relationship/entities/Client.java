@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -30,14 +32,14 @@ public class Client {
             joinColumns = @JoinColumn(name= "id_cliente"),
             inverseJoinColumns = @JoinColumn(name="id_direcciones"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"id_direcciones"}))
-    private List<Address> addresses;
+    private Set<Address> addresses;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy ="client")
-    private List<Invoice> invoices;
+    private Set<Invoice> invoices;
 
     public Client() {
-        addresses = new ArrayList<>();
-        invoices = new ArrayList<>();
+        addresses = new HashSet<>();
+        invoices = new HashSet<>();
     }
 
     public Client(String name, String lastname) {
