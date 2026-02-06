@@ -54,6 +54,11 @@ public class Client {
         return this;
     }
 
+    public void removeInvoice(Invoice invoice) {
+        this.getInvoices().remove(invoice);
+        invoice.setClient(null);
+    }
+
     @Override
     public String toString() {
         return "{id=" + id +
@@ -62,5 +67,6 @@ public class Client {
                 ", invoices=" + invoices +
                 ", addresses=" + addresses + "}";
     }
+
 
 }

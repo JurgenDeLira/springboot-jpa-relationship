@@ -28,8 +28,67 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		oneToManyInvoiceBidireccionalFindById();
+		removeInvoiceBidireccional();
 	}
+
+	@Transactional
+	public void removeInvoiceBidireccional(){
+		Client client = new Client("John", "Doe");
+
+
+			Invoice invoice1 = new Invoice("Compras de la casa", 5000L);
+			Invoice invoice2 = new Invoice("Compras de oficina", 8000L);
+
+			client.addInvoice(invoice1).addInvoice(invoice2);
+			clientRepository.save(client);
+			System.out.println(client);
+
+		Optional<Client> optionalClientDb = clientRepository.findOne(3L);
+
+		optionalClientDb.ifPresent(clientDb -> {
+			Invoice invoice3 = new Invoice("Compras de la casa", 5000L);
+			invoice3.setId(1L);
+
+			Optional<Invoice> invoiceOptional = Optional.of(invoice3);
+			invoiceOptional.ifPresent( invoice -> {
+
+				clientDb.removeInvoice(invoice);
+				clientRepository.save(clientDb);
+				System.out.println(clientDb);
+			});
+		});
+	}
+
+	@Transactional
+	public void removeInvoiceBidireccionalFindById(){
+		Optional<Client> optionalClient = clientRepository.findOne(1L);
+
+		optionalClient.ifPresent(client -> {
+
+			Invoice invoice1 = new Invoice("Compras de la casa", 5000L);
+			Invoice invoice2 = new Invoice("Compras de oficina", 8000L);
+
+			client.addInvoice(invoice1).addInvoice(invoice2);
+			clientRepository.save(client);
+			System.out.println(client);
+		});
+
+		Optional<Client> optionalClientDb = clientRepository.findOne(1L);
+
+		optionalClientDb.ifPresent(client -> {
+			Invoice invoice3 = new Invoice("Compras de la casa", 5000L);
+			invoice3.setId(1L);
+
+			Optional<Invoice> invoiceOptional = Optional.of(invoice3); //invoiceRepository.findById(2L);
+			invoiceOptional.ifPresent( invoice -> {
+
+				client.removeInvoice(invoice);
+				clientRepository.save(client);
+				System.out.println(client);
+			});
+		});
+	}
+
 
 	@Transactional
 	public void oneToManyInvoiceBidireccionalFindById(){
