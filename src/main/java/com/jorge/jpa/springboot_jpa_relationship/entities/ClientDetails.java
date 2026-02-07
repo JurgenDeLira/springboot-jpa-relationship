@@ -20,6 +20,10 @@ public class ClientDetails {
     private boolean premium;
     private Integer point;
 
+    @OneToOne
+    @JoinColumn(name = "id_cliente_detalle")
+    private Client client;
+
 
     public ClientDetails(boolean premium, Integer point) {
         this.premium = premium;
