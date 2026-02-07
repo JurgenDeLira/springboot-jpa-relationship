@@ -1,10 +1,7 @@
 package com.jorge.jpa.springboot_jpa_relationship;
 
 import com.jorge.jpa.springboot_jpa_relationship.entities.*;
-import com.jorge.jpa.springboot_jpa_relationship.repositories.ClientDetailsRepository;
-import com.jorge.jpa.springboot_jpa_relationship.repositories.ClientRepository;
-import com.jorge.jpa.springboot_jpa_relationship.repositories.InvoiceRepository;
-import com.jorge.jpa.springboot_jpa_relationship.repositories.StudentRepository;
+import com.jorge.jpa.springboot_jpa_relationship.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,13 +25,37 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	@Autowired
 	private StudentRepository studentRepository;
 
+	@Autowired
+	private CourseRepository courseRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationshipApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		manyToMany();
+		manyToManyFind();
+	}
+
+	@Transactional
+	public void manyToManyFind() {
+
+		Optional<Student> studentOptional1 = studentRepository.findById(1L);
+		Optional<Student> studentOptional2 = studentRepository.findById(2L);
+
+		Student student1 = studentOptional1.get();
+		Student student2 = studentOptional2.get();
+
+		Course course1 = courseRepository.findById(1L).get();
+		Course course2 = courseRepository.findById(2L).get();
+
+		student1.setCourses(Set.of(course1, course2));
+		student2.setCourses(Set.of(course2));
+
+		studentRepository.saveAll(List.of(student1, student2));
+
+		System.out.println(student1);
+		System.out.println(student2);
 	}
 
 	@Transactional
