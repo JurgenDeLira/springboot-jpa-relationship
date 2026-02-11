@@ -1,11 +1,16 @@
 package com.jorge.jpa.springboot_jpa_relationship.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -18,7 +23,15 @@ public class Course {
 
     private String instructor;
 
+    @ManyToMany(mappedBy = "courses")
+    private Set<Student> students;
+
+    public Course() {
+        this.students = new HashSet<>();
+    }
+
     public Course(String name, String instructor) {
+        this();
         this.name = name;
         this.instructor = instructor;
     }
